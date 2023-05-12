@@ -7,17 +7,17 @@ import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import AddMortgageForm from "../components/AddMortgageForm";
-import { addMortgageURL, fetchMortgagesURL } from "../assets/URLs";
+import { addMortgageURL, fetchMortgageURL } from "../assets/URLs";
 import { updateMortgageState } from "../reducers/mortgageReducer";
-import { updateMortgageListState } from "../reducers/MortgageListReducer";
+import { updateMortgageListState } from "../reducers/mortgageListReducer";
 
 const Mortgages = () => {
   const dispatch = useDispatch();
   //   const [name, setName] = useState("");
   const mortgage = useSelector((state) => state.mortgage.value);
   const [cid, setCid] = useState("");
-    const mortgageList = useSelector((state) => state.mortgageList.value);
-  //   const [query, setQuery] = useState("");
+  const mortgageList = useSelector((state) => state.mortgageList.value);
+  const [query, setQuery] = useState("");
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -47,21 +47,21 @@ const Mortgages = () => {
     dispatch(updateMortgageState([]));
   };
 
-    useEffect(() => {
-      fetchMortgageList();
-    }, []);
+  useEffect(() => {
+    fetchMortgageList();
+  }, []);
 
-    async function fetchMortgageList() {
-      await axios
-        .get(`${fetchMortgagesURL}`)
-        .then((response) => {
-          console.log("My Mortgages", response.data);
-          dispatch(updateMortgageListState(response.data));
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+  async function fetchMortgageList() {
+    await axios
+      .get(`${fetchMortgageURL}`)
+      .then((response) => {
+        console.log("My Mortgages", response.data);
+        dispatch(updateMortgageListState(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   return (
     <div>
       <Modal
@@ -104,13 +104,13 @@ const Mortgages = () => {
         className="container-fluid mt-3"
         style={{ overflow: "auto", height: "80%" }}
       >
-        <div className="row">
+        <div className="row justify-content-center">
           <div className="col-3">
             <input
-              className="search__input"
+              className="search__input "
               type="text"
               placeholder="Search Mortgage"
-              //   onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => setQuery(event.target.value)}
             />
           </div>
 
@@ -122,40 +122,44 @@ const Mortgages = () => {
           </button>
         </div>
 
-        {/* <div className="row m-3 align-items-center">
-          {MortgageList
-            ?.filter((cust) => {
+        <div className="row m-3 align-items-center">
+          {mortgageList
+            ?.filter((mort) => {
               if (query === "") {
-                return cust;
+                return mort;
               } else if (
-                cust.firstName.toLowerCase().includes(query.toLowerCase())
+                mort.productName.toLowerCase().includes(query.toLowerCase())
               ) {
-                return cust;
-              } else if (
-                cust.lastName.toLowerCase().includes(query.toLowerCase())
-              ) {
-                return cust;
-              }
+                return mort;
+              } 
             })
-            .map((cust, index) => (
+            .map((mort, index) => (
               <div key={index}>
                 <Accordion>
                   <Accordion.Item eventKey={index}>
                     <Accordion.Header>
                       <div
-                        key={cust?.id}
+                        key={mort?.cid}
                         className="col-12 row align-items-center justify-content-between p-2 my-2"
                       >
                         <div className="col-12 row align-items-center justify-content-between p-2 my-2">
-                          <div className="col-sm-2">
+                          <div className="col-3">
+                            <div className="col">Product Name:</div>
+                            <b>{mort?.productName}</b>
+                          </div>
+                          <div className="col-3">
+                          Mortgage id: {" "}
+                            <b>{mort?.cid}</b>
+                          </div>
+                          <div className="col-3">
+                            <div className="col">Customer Name:</div>
                             <b>
-                              {cust?.firstName} {cust?.lastName}
+                              {mort?.customerFirstName} {mort?.customerLastName}
                             </b>
                           </div>
-                          <div className="col-sm-2">
-                            <b>
-                              Mortgage id: {cust?.id} 
-                            </b>
+                          <div className="col-3">
+                            Customer id: {" "}
+                            <b>{mort?.mid}</b>
                           </div>
                         </div>
                       </div>
@@ -163,17 +167,49 @@ const Mortgages = () => {
                     <Accordion.Body>
                       <div className="row justify-content-center">
                         <div className="col-md-3 col-sm-6 col-12 mt-2 justify-content-center">
-                          <b>Contact: </b>
-                          {cust?.contact}{" "}
+                          Market Value:{" "}
+                          <b>
+                            Rs.
+                            {mort?.marketValue}{" "}
+                          </b>
                         </div>
                         <div className="col-md-3 col-sm-6 col-12 mt-2 justify-content-center">
-                          <b>Email: </b>
-                          {cust?.email}{" "}
+                          Amount Lent:{" "}
+                          <b>
+                            Rs.
+                            {mort?.givenAmount}{" "}
+                          </b>
                         </div>
 
                         <div className="col-md-3 col-sm-6 col-12 mt-2 justify-content-center">
-                          <b>Address: </b>
-                          {Mortgage?.address} {" "}
+                          Amount Left:{" "}
+                          <b>
+                            Rs.
+                            {mort?.leftAmount}{" "}
+                          </b>
+                        </div>
+                      </div>
+                      <div className="row justify-content-center">
+                        <div className="col-md-3 col-sm-6 col-12 mt-2 justify-content-center">
+                        <div>Date of issue:{" "}</div>
+                          <b>
+                      
+                            {mort?.issueDate}{" "}
+                          </b>
+                        </div>
+                        <div className="col-md-3 col-sm-6 col-12 mt-2 justify-content-center">
+                          <div>Date of last payment:{" "}</div>
+                          <b>
+                      
+                            {mort?.lastPaid}{" "}
+                          </b>
+                        </div>
+                        <div className="col-md-3 col-sm-6 col-12 mt-2 justify-content-center">
+                          <div>Rate of Interest:{" "}</div>
+                          <b>
+                      
+                            {mort?.interestRate}{"%"}
+                          </b>
                         </div>
                       </div>
                     </Accordion.Body>
@@ -181,7 +217,7 @@ const Mortgages = () => {
                 </Accordion>
               </div>
             ))}
-        </div> */}
+        </div>
       </div>
     </div>
   );

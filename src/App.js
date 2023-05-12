@@ -8,6 +8,7 @@ import {
 import Home from "./pages/Home";
 import Customers from "./pages/Customers";
 import Mortgages from "./pages/Mortgages";
+import Payments from "./pages/Payments";
 import Transactions from "./pages/Transactions";
 import { LoggedInUserContext } from "./context/LoggedInUserContext";
 import { useContext, useEffect, useState } from "react";
@@ -31,7 +32,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/Customers" element={<Customers />} /> Customers
           <Route path="/Mortgages" element={<Mortgages />} /> Mortgages
-          <Route path="/Transactions" element={<Transactions />} /> Transactions
+          <Route path="/Payments" element={<Payments />} /> Payments
           {/* <Route path="*" element={<Home />} /> */}
         </Routes>
       </Router>

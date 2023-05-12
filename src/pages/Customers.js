@@ -92,7 +92,7 @@ const Customers = () => {
         className="container-fluid mt-3"
         style={{ overflow: "auto", height: "80%" }}
       >
-        <div className="row">
+        <div className="row justify-content-center">
           <div className="col-3">
             <input
               className="search__input"
@@ -161,7 +161,7 @@ const Customers = () => {
 
                         <div className="col-md-3 col-sm-6 col-12 mt-2 justify-content-center">
                           <b>Address: </b>
-                          {customer?.address} {" "}
+                          {cust?.address} {" "}
                         </div>
                       </div>
                     </Accordion.Body>
