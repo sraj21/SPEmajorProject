@@ -9,14 +9,14 @@ import Modal from "react-bootstrap/Modal";
 import AddMortgageForm from "../components/AddMortgageForm";
 import { addMortgageURL, fetchMortgagesURL } from "../assets/URLs";
 import { updateMortgageState } from "../reducers/mortgageReducer";
-// import { updateMortgageListState } from "../reducers/MortgageListReducer";
+import { updateMortgageListState } from "../reducers/MortgageListReducer";
 
 const Mortgages = () => {
   const dispatch = useDispatch();
   //   const [name, setName] = useState("");
   const mortgage = useSelector((state) => state.mortgage.value);
   const [cid, setCid] = useState("");
-  //   const mortgageList = useSelector((state) => state.mortgageList.value);
+    const mortgageList = useSelector((state) => state.mortgageList.value);
   //   const [query, setQuery] = useState("");
 
   const [show, setShow] = useState(false);
@@ -47,21 +47,21 @@ const Mortgages = () => {
     dispatch(updateMortgageState([]));
   };
 
-  //   useEffect(() => {
-  //     fetchMortgageList();
-  //   }, []);
+    useEffect(() => {
+      fetchMortgageList();
+    }, []);
 
-  //   async function fetchMortgageList() {
-  //     await axios
-  //       .get(`${fetchMortgagesURL}`)
-  //       .then((response) => {
-  //         console.log("My Mortgages", response.data);
-  //         dispatch(updateMortgageListState(response.data));
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
+    async function fetchMortgageList() {
+      await axios
+        .get(`${fetchMortgagesURL}`)
+        .then((response) => {
+          console.log("My Mortgages", response.data);
+          dispatch(updateMortgageListState(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   return (
     <div>
       <Modal
